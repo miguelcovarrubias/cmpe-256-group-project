@@ -1,0 +1,6 @@
+*.pyc
+.DS_Store
+webapp/env/
+webapp/venv/
+webapp/config.py
+webapp/__pycache__/
