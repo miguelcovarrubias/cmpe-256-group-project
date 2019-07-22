@@ -1,0 +1,84 @@
+{% extends 'layouts/main.html' %}
+{% block title %}Spotify Recommendation System - Demo{% endblock %}
+{% block content %}
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<div class="row d-flex justify-content-center">
+  <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+    <div class="input-group">
+      <input id="search-field" type="text" class="form-control" placeholder="Paste a Playlist URL here!">
+      <div class="input-group-append">
+        <button id="search-button" class="btn button-green" type="button">
+          <i class="fa fa-cogs"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+<br>
+<br>
+
+<div id="playlist-results">
+</div>
+
+<div id="playlist-template" class="card mb-3 hidden">
+  <div class="card-header playlist-name"></div>
+  <div class="card-body">
+    <a href="" class="card-link playlist-url" target="_blank">Url</a>
+  </div>
+</div>
+
+<script type="text/javascript">
+  // display the recommendation results
+  var renderRecommendations = function(playlists){
+    // remove currently displayed playlists
+    $("#playlist-results").empty();
+
+    // append playists
+    playlists.forEach(function(playlist, i){
+      var template = $("#playlist-template").clone();
+      template.attr("id", "playlist-"+i);
+      template.removeClass("hidden");
+
+      template.addClass("border-success");
+
+      var cardHeader = template.children(".card-header");
+      cardHeader.text(i + ". " + playlist.playlistName);
+
+      var cardBody = template.children(".card-body");
+      cardBody.children(".playlist-url").attr("href", playlist.playlistUrl);
+      
+      $('#playlist-results').append(template);
+    });
+  }
+
+  // Ajax call for submitting playlist recommendation request
+  $('#search-button').on('click', function (e) {
+
+    playlistUrl = $('#search-field').val();
+    var request_payload = {
+      'playlist_url': playlistUrl
+    }
+
+    $.ajax({
+      url: "{{url_for('search_api')}}",
+      data: JSON.stringify(request_payload),
+      type: 'POST',
+      crossDomain: true,
+      dataType: 'json',
+      success: function(response) {
+        console.log(response);
+        renderRecommendations(response.playlists);
+      },
+      error: function(error) {
+        console.log(error);
+      },
+    });
+
+  });
+
+</script>
+
+{% endblock %}

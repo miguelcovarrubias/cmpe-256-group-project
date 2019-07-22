@@ -1,0 +1,170 @@
+
+/**
+ * @file
+ * Main stylesheet file.
+ */
+
+
+/*****************************************************************************
+ * Main elements
+ ****************************************************************************/
+@font-face {
+  font-family: 'Proxima';
+  src: url('../fonts/Proxima Nova Reg.woff') format('woff'),
+       url('../fonts/Proxima Nova Reg.ttf') format('truetype');
+}
+
+* {
+  font-family: Proxima;
+  font-weight: 400;
+  color: white;
+}
+
+html {
+  overflow-y: scroll;
+}
+
+body{
+  background-color: #212121;
+}
+
+a {
+  cursor: pointer;
+}
+::selection {
+  background: #555;
+  color: #FFF;
+}
+::-moz-selection {
+  background: #555;
+  color: #FFF;
+}
+::-webkit-selection {
+  background: #555;
+  color: #FFF;
+}
+
+.hidden{
+  display: none;
+}
+
+button {
+    border-radius: 20px;
+    border: none;
+    padding: 8px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 20px;
+    outline: none;
+    font-family:FontAwesome, Proxima;
+}
+
+.button_small {
+    border-radius: 20px;
+    border: none;
+    padding: 8px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 14px;
+    outline: none;
+    margin-top: 10px;
+    font-family:FontAwesome, Proxima;
+}
+
+button, html input[type=button], input[type=reset], input[type=submit] {
+    -webkit-appearance: button;
+    cursor: pointer;
+}
+
+.button-green {
+    background: #1DB954;
+    color: white;
+    border: 1px solid #1DB954;
+}
+.button-green:hover {
+    background: #43e57d;
+}
+
+.button-gray {
+    background: #535353;
+    color: white;
+    border: 1px solid #535353;
+}
+.button-gray:hover {
+    background: #b3b3b3;
+}
+
+.button-red {
+  background: #cc0000;
+  color: white;
+  border: 1px solid #cc0000;
+}
+.button-red:hover {
+    background: #ff0033;
+}
+
+#wrap {
+  max-width: 960px;
+}
+
+.container {
+  max-width: 960px;
+  background-color: #000000;
+}
+
+/* Main elements end */
+
+
+/*****************************************************************************
+ * Various other styles
+ ****************************************************************************/
+
+#header_img{
+  height: 235px;
+  position: relative;
+  background-image: url(https://img3.goodfon.com/wallpaper/nbig/9/9a/fon-temno-plastinka-vinil.jpg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  z-index: 1;
+}
+
+#header_img_spotify_logo{
+	position: relative;
+  background: url(../img/spotifylogo.png) no-repeat;
+  background-size: 165px;
+  height:50px;
+ 	top: 50px;
+  left: 2%;
+  width: 100%;
+}
+
+#header_img_title_text{
+	position: relative;
+  font-size: 30px;
+	top: 50px;
+  left: 2%;
+	width: 100%;
+  font-weight: 900;
+}
+
+.nav {
+  left: 2%;
+  position: absolute;
+  bottom: 0;
+}
+
+.nav-tabs .nav-item .nav-link.active {
+  background: #1DB954;
+}
+
+#try_button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.feature-app-img { position: relative; text-align: center; }
+
+/* Various other styles end */
