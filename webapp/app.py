@@ -65,8 +65,11 @@ def search_api():
         return jsonify({'response': 'invalid call, must specify json in the following format=> {"playlist_url": <insert playlist url here>}'}), 400
 
     playlist_url = 'https://open.spotify.com/playlist/' + json_data['playlist_url']
+    print(playlist_url)
     sp = cmpe_spotify(clientId, clientSecret)
     user_playlist_data = sp.playlistGetInfo(playlist_url, 0)
+
+    playlistId = json_data['playlist_url'].split('/')[-1].split(':')[-1]
 
     # convert playlist data into dataframe of 1 row
     user_df = utils.jsonPlaylistToDataframe(user_playlist_data)
@@ -78,7 +81,7 @@ def search_api():
 
     # ToDo: add logic to recommend here! this is just a random playlist response the format is not final
     response = {
-        'currentPlaylist': 'https://open.spotify.com/embed/playlist/' + json_data['playlist_url'],
+        'currentPlaylist': 'https://open.spotify.com/embed/playlist/' + playlistId,
         'playlists': [
             {'playlistRanking': '1.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[0]},
             {'playlistRanking': '2.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[1]},
