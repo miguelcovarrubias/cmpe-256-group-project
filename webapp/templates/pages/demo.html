@@ -16,30 +16,57 @@
   </div>
 </div>
 
-<br>
-<br>
-
 <div id="playlist-results">
 </div>
 
-<div id="playlist-template" class="hidden row d-flex justify-content-center">
-  <h3 class="playlist-rank"></h3>
-  <iframe class="playlist-iframe" width="600" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+<br>
+<br>
+<br>
+
+<div id="input-playlist-template" class="d-none">
+  <div class="header-div d-flex justify-content-center">
+    <h3>This is the input playlist!</h3>
+  </div>
+  <div class="iframe-div d-flex justify-content-center">
+    <iframe class="playlist-iframe" width="600" height="260" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+  </div>
+  <div class="header-div d-flex justify-content-center">
+    <h3>Here are the ranked recommendations!</h3>
+  </div>
+</div>
+
+<div id="playlist-template" class="d-none">
+  <div class="header-div d-flex justify-content-center">
+    <h3 class="playlist-rank"></h3>
+  </div>
+  <div class="iframe-div d-flex justify-content-center">
+    <iframe class="playlist-iframe" width="600" height="260" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+  </div>
 </div>
 
 <script type="text/javascript">
   // display the recommendation results
-  var renderRecommendations = function(playlists){
-    // append playists
-    playlists.forEach(function(playlist, i){
+  var renderRecommendations = function(response){
+    // append input playlist
+    var template = $("#input-playlist-template").clone();
+    template.attr("id", "input-playlist");
+    template.removeClass("d-none");
+
+    var playlistIframe = template.children(".iframe-div").children(".playlist-iframe");
+    playlistIframe.attr("src",response.currentPlaylist);
+
+    $('#playlist-results').append(template);
+
+    // append playist recommendations
+    response.playlists.forEach(function(playlist, i){
       var template = $("#playlist-template").clone();
       template.attr("id", "playlist-"+i);
-      template.removeClass("hidden");
+      template.removeClass("d-none");
 
-      var playlistIframe = template.children(".playlist-rank");
-      playlistIframe.text(playlist.playlistRanking);
+      var playlistHeader = template.children(".header-div").children(".playlist-rank");
+      playlistHeader.text(playlist.playlistRanking);
 
-      var playlistIframe = template.children(".playlist-iframe");
+      var playlistIframe = template.children(".iframe-div").children(".playlist-iframe");
       playlistIframe.attr("src",playlist.playlistUrl);
 
       $('#playlist-results').append(template);
@@ -65,7 +92,7 @@
       dataType: 'json',
       success: function(response) {
         console.log(response);
-        renderRecommendations(response.playlists);
+        renderRecommendations(response);
       },
       error: function(error) {
         console.log(error);
