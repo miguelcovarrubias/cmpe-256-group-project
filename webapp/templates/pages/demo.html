@@ -18,44 +18,39 @@
 
 <br>
 <br>
-<br>
 
 <div id="playlist-results">
 </div>
 
-<div id="playlist-template" class="card mb-3 hidden">
-  <div class="card-header playlist-name"></div>
-  <div class="card-body">
-    <a href="" class="card-link playlist-url" target="_blank">Url</a>
-  </div>
+<div id="playlist-template" class="hidden row d-flex justify-content-center">
+  <h3 class="playlist-rank"></h3>
+  <iframe class="playlist-iframe" width="600" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
 </div>
 
 <script type="text/javascript">
   // display the recommendation results
   var renderRecommendations = function(playlists){
-    // remove currently displayed playlists
-    $("#playlist-results").empty();
-
     // append playists
     playlists.forEach(function(playlist, i){
       var template = $("#playlist-template").clone();
       template.attr("id", "playlist-"+i);
       template.removeClass("hidden");
 
-      template.addClass("border-success");
+      var playlistIframe = template.children(".playlist-rank");
+      playlistIframe.text(playlist.playlistRanking);
 
-      var cardHeader = template.children(".card-header");
-      cardHeader.text(i + ". " + playlist.playlistName);
+      var playlistIframe = template.children(".playlist-iframe");
+      playlistIframe.attr("src",playlist.playlistUrl);
 
-      var cardBody = template.children(".card-body");
-      cardBody.children(".playlist-url").attr("href", playlist.playlistUrl);
-      
       $('#playlist-results').append(template);
     });
   }
 
   // Ajax call for submitting playlist recommendation request
   $('#search-button').on('click', function (e) {
+
+    // remove currently displayed playlists
+    $("#playlist-results").empty();
 
     playlistUrl = $('#search-field').val();
     var request_payload = {

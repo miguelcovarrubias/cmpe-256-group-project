@@ -76,16 +76,16 @@ def search_api():
     # ToDo: add logic to recommend here! this is just a random playlist response the format is not final
     response = {
         'playlists': [
-            {'playlistName': '1', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[0]},
-            {'playlistName': '2', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[1]},
-            {'playlistName': '3', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[2]},
-            {'playlistName': '4', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[3]},
-            {'playlistName': '5', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[4]},
-            {'playlistName': '6', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[5]},
-            {'playlistName': '7', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[6]},
-            {'playlistName': '8', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[7]},
-            {'playlistName': '9', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[8]},
-            {'playlistName': '10', 'playlistUrl': 'https://open.spotify.com/playlist/' + recomm_list[9]}
+            {'playlistRanking': '1.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[0]},
+            {'playlistRanking': '2.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[1]},
+            {'playlistRanking': '3.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[2]},
+            {'playlistRanking': '4.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[3]},
+            {'playlistRanking': '5.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[4]},
+            {'playlistRanking': '6.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[5]},
+            {'playlistRanking': '7.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[6]},
+            {'playlistRanking': '8.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[7]},
+            {'playlistRanking': '9.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[8]},
+            {'playlistRanking': '10.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[9]}
         ]
     }
     return jsonify(response)
