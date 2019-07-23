@@ -10,7 +10,7 @@ import logging
 import os
 from pprint import pprint
 
-from data.PlaylistData import PlaylistData
+from data.playlist_data import playlist_data
 import sys
 from cmpe_spotify import cmpe_spotify
 import utils
@@ -26,8 +26,10 @@ app.config.from_object('config')
 # Data.
 #----------------------------------------------------------------------------#
 
-data = PlaylistData("./data/nortenans_and_regue_list.txt.json")
+data = playlist_data("./data/nortenans_and_regue_list.txt.json")
 data.load_new_data("")
+knn_m = knn_model()
+knn_m.train(data)
 
 #----------------------------------------------------------------------------#
 # Spotify Api
@@ -62,7 +64,6 @@ def search_api():
     if not json_data or not 'playlist_url' in json_data.keys():
         return jsonify({'response': 'invalid call, must specify json in the following format=> {"playlist_url": <insert playlist url here>}'}), 400
 
-    #playlist_url = 'https://open.spotify.com/playlist/' + "37i9dQZF1DX10zKzsJ2jva" #json_data['playlist_url']
     playlist_url = 'https://open.spotify.com/playlist/' + json_data['playlist_url']
     sp = cmpe_spotify(clientId, clientSecret)
     user_playlist_data = sp.playlistGetInfo(playlist_url, 0)
@@ -70,8 +71,10 @@ def search_api():
     # convert playlist data into dataframe of 1 row
     user_df = utils.jsonPlaylistToDataframe(user_playlist_data)
 
-    knn_m = knn_model()
-    recomm_list = knn_m.train_and_recommend(data, user_df)
+    recomm_list = knn_m.recommend(data, user_df)
+
+    print("Recommendation list for %s" % json_data['playlist_url'])
+    print(recomm_list)
 
     # ToDo: add logic to recommend here! this is just a random playlist response the format is not final
     response = {

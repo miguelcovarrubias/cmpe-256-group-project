@@ -5,7 +5,7 @@ import pandas as pd
 def jsonPlaylistToDataframe(user_playlist_data):
     cumulative_track_features = {}
     feature_keys = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']
-    print(user_playlist_data)
+    #print(user_playlist_data)
     for track in user_playlist_data['tracks']:
         if track['track_features'] is None:
             # print("skipping track")
@@ -33,7 +33,7 @@ def jsonPlaylistToDataframe(user_playlist_data):
                     cumulative_track_features[feature])
                 # playlist_track_features[feature] = min(cumulative_track_features[feature])
 
-    print(cumulative_track_features)
+    #print(cumulative_track_features)
     row = []
     for i in range(len(feature_keys)):
         row.append(cumulative_track_features[feature_keys[i]])

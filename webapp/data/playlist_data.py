@@ -4,7 +4,7 @@ import os.path
 from os import path
 
 #singleton data holder
-class PlaylistData:
+class playlist_data:
 
     class __PlaylistData:
         def __init__(self, arg):
@@ -90,9 +90,9 @@ class PlaylistData:
     instance = None
 
     def __init__(self, arg):
-        if not PlaylistData.instance:
-            PlaylistData.instance = PlaylistData.__PlaylistData(arg)
+        if not playlist_data.instance:
+            playlist_data.instance = playlist_data.__PlaylistData(arg)
         else:
-            PlaylistData.instance.file_source = arg
+            playlist_data.instance.file_source = arg
     def __getattr__(self, name):
         return getattr(self.instance, name)
