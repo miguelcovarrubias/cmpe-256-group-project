@@ -78,6 +78,7 @@ def search_api():
 
     # ToDo: add logic to recommend here! this is just a random playlist response the format is not final
     response = {
+        'currentPlaylist': 'https://open.spotify.com/embed/playlist/' + json_data['playlist_url'],
         'playlists': [
             {'playlistRanking': '1.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[0]},
             {'playlistRanking': '2.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[1]},
