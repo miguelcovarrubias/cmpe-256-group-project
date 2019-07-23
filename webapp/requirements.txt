@@ -4,3 +4,4 @@ sklearn
 requests
 spotipy
 pandas
+tqdm
