@@ -2,3 +2,4 @@ flask
 flask_restful
 sklearn
 requests
+spotipy
