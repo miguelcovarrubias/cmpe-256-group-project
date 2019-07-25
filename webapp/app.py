@@ -15,6 +15,8 @@ import sys
 from cmpe_spotify import cmpe_spotify
 import utils
 from models.knn_model import knn_model
+from models.pairwise_cosine_similarity import pairwise_cosine_similarity
+
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
@@ -65,7 +67,9 @@ def search_api():
         return jsonify({'response': 'invalid call, must specify json in the following format=> {"playlist_url": <insert playlist url here>}'}), 400
 
     playlist_url = 'https://open.spotify.com/playlist/' + json_data['playlist_url']
-    print(playlist_url)
+
+    model_strategy_method = json_data['method']
+
     sp = cmpe_spotify(clientId, clientSecret)
     user_playlist_data = sp.playlistGetInfo(playlist_url, 0)
 
@@ -74,7 +78,13 @@ def search_api():
     # convert playlist data into dataframe of 1 row
     user_df = utils.jsonPlaylistToDataframe(user_playlist_data)
 
-    recomm_list = knn_m.recommend(data, user_df)
+
+    recomm_list = []
+
+    if model_strategy_method == "knn":
+        recomm_list = knn_m.recommend(data, user_df)
+    elif model_strategy_method == "cosine":
+        recomm_list = pairwise_cosine_similarity.recommend(data, user_df, 10)
 
     print("Recommendation list for %s" % json_data['playlist_url'])
     print(recomm_list)
