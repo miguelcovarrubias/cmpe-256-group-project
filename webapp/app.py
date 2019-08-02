@@ -31,10 +31,12 @@ app.config.from_object('config')
 # Data.
 #----------------------------------------------------------------------------#
 
+ratings_file_path = "./data/ratings.csv"
 data = playlist_data("./data/nortenans_and_regue_list.txt.json")
 data.load_new_data("")
 knn_m = knn_model()
 knn_m.train(data)
+
 
 #----------------------------------------------------------------------------#
 # Spotify Api
@@ -116,7 +118,7 @@ def submit_vote():
 
     timestamp = datetime.now().strftime("%d-%b-%Y-%H:%M:%S")
 
-    with open('ratings.csv', 'a+') as csvfile:
+    with open(ratings_file_path, 'a+') as csvfile:
         writer = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
         writer.writerow([timestamp, json_data['originalPlaylist'], json_data['recommendedPlaylist'], json_data['score']])
 
