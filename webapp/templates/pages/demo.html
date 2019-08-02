@@ -82,21 +82,23 @@
     $('.input-group #search_param').val('knn');
   });
   // submit upvote/downvote
-  var submitUpvote = function(panel_id, originalPlaylist, recommendedPlaylist) {
-    $('#' + panel_id).children('.vote-div').children('.button_small').removeClass('button-green button-red').addClass('button-gray');
+  var submitUpvote = function(panel_id, method, originalPlaylist, recommendedPlaylist) {
+    $('#' + panel_id).children('.vote-div').children('.button_small').removeClass('button-green button-red').addClass('button-gray').prop('disabled', true);
 
     var payload = {
       'originalPlaylist' : originalPlaylist,
       'recommendedPlaylist' : recommendedPlaylist,
+      'method' : method,
       'score': 1
     }
     submitVote(payload);
   }
-  var submitDownvote = function(panel_id, originalPlaylist, recommendedPlaylist) {
-    $('#' + panel_id).children('.vote-div').children('.button_small').removeClass('button-green button-red').addClass('button-gray');
+  var submitDownvote = function(panel_id, method, originalPlaylist, recommendedPlaylist) {
+    $('#' + panel_id).children('.vote-div').children('.button_small').removeClass('button-green button-red').addClass('button-gray').prop('disabled', true);
     var payload = {
       'originalPlaylist' : originalPlaylist,
       'recommendedPlaylist' : recommendedPlaylist,
+      'method' : method,
       'score': -1
     }
     submitVote(payload);
@@ -144,10 +146,10 @@
       playlistIframe.attr("src",playlist.playlistUrl);
 
       // upvote button
-      template.children(".vote-div").children(".upvote-button").click(function(){ submitUpvote(template.attr("id"), response.currentPlaylist, playlist.playlistUrl); })
+      template.children(".vote-div").children(".upvote-button").click(function(){ submitUpvote(template.attr("id"), response.method, response.currentPlaylist, playlist.playlistUrl); })
 
       // downvote button
-      template.children(".vote-div").children(".downvote-button").click(function(){ submitDownvote(template.attr("id"), response.currentPlaylist, playlist.playlistUrl); })
+      template.children(".vote-div").children(".downvote-button").click(function(){ submitDownvote(template.attr("id"), response.method,response.currentPlaylist, playlist.playlistUrl); })
 
       $('#playlist-results').append(template);
     });

@@ -97,6 +97,7 @@ def search_api():
     # ToDo: add logic to recommend here! this is just a random playlist response the format is not final
     response = {
         'currentPlaylist': 'https://open.spotify.com/embed/playlist/' + playlistId,
+        'method': model_strategy_method,
         'playlists': [
             {'playlistRanking': '1.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[0]},
             {'playlistRanking': '2.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[1]},
@@ -120,7 +121,7 @@ def submit_vote():
 
     with open(ratings_file_path, 'a+') as csvfile:
         writer = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
-        writer.writerow([timestamp, json_data['originalPlaylist'], json_data['recommendedPlaylist'], json_data['score']])
+        writer.writerow([timestamp, json_data['originalPlaylist'], json_data['recommendedPlaylist'], json_data['score'], json_data['method'] ])
 
     response = {
         'result': True
