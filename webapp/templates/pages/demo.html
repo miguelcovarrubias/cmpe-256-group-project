@@ -58,7 +58,11 @@
 
 <div id="playlist-template" class="d-none">
   <div class="header-div d-flex justify-content-center">
-    <h3 class="playlist-rank"></h3>
+    <h3 class="playlist-rank"></h3><br>
+  </div>
+  <div class="vote-div d-flex justify-content-center">
+    <button class="upvote-button button-green button_small"><i class="fa fa-thumbs-up" aria-hidden="true"></i></button>
+    <button class="downvote-button button-red button_small"><i class="fa fa-thumbs-down" aria-hidden="true"></i></button>
   </div>
   <div class="iframe-div d-flex justify-content-center">
     <iframe class="playlist-iframe" width="600" height="260" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
@@ -77,6 +81,44 @@
     // default to knn
     $('.input-group #search_param').val('knn');
   });
+  // submit upvote/downvote
+  var submitUpvote = function(panel_id, originalPlaylist, recommendedPlaylist) {
+    $('#' + panel_id).children('.vote-div').children('.button_small').removeClass('button-green button-red').addClass('button-gray');
+
+    var payload = {
+      'originalPlaylist' : originalPlaylist,
+      'recommendedPlaylist' : recommendedPlaylist,
+      'score': 1
+    }
+    submitVote(payload);
+  }
+  var submitDownvote = function(panel_id, originalPlaylist, recommendedPlaylist) {
+    $('#' + panel_id).children('.vote-div').children('.button_small').removeClass('button-green button-red').addClass('button-gray');
+    var payload = {
+      'originalPlaylist' : originalPlaylist,
+      'recommendedPlaylist' : recommendedPlaylist,
+      'score': -1
+    }
+    submitVote(payload);
+  }
+
+  var submitVote = function (payload) {
+    $.ajax({
+      url: "{{url_for('submit_vote')}}",
+      data: JSON.stringify(payload),
+      type: 'POST',
+      crossDomain: true,
+      dataType: 'json',
+      success: function(response) {
+        console.log(response);
+      },
+      error: function(error) {
+        console.log(error);
+      },
+
+    });
+  }
+
   // display the recommendation results
   var renderRecommendations = function(response){
     // append input playlist
@@ -100,6 +142,12 @@
 
       var playlistIframe = template.children(".iframe-div").children(".playlist-iframe");
       playlistIframe.attr("src",playlist.playlistUrl);
+
+      // upvote button
+      template.children(".vote-div").children(".upvote-button").click(function(){ submitUpvote(template.attr("id"), response.currentPlaylist, playlist.playlistUrl); })
+
+      // downvote button
+      template.children(".vote-div").children(".downvote-button").click(function(){ submitDownvote(template.attr("id"), response.currentPlaylist, playlist.playlistUrl); })
 
       $('#playlist-results').append(template);
     });

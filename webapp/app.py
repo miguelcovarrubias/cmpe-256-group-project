@@ -4,6 +4,9 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 import sys
 
+import csv
+from datetime import datetime
+
 import requests
 import json
 import logging
@@ -104,6 +107,21 @@ def search_api():
             {'playlistRanking': '9.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[8]},
             {'playlistRanking': '10.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[9]}
         ]
+    }
+    return jsonify(response)
+
+@app.route('/api/submitVote', methods=['POST'])
+def submit_vote():
+    json_data = request.get_json(force=True)
+
+    timestamp = datetime.now().strftime("%d-%b-%Y-%H:%M:%S")
+
+    with open('ratings.csv', 'a+') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([timestamp, json_data['originalPlaylist'], json_data['recommendedPlaylist'], json_data['score']])
+
+    response = {
+        'result': True
     }
     return jsonify(response)
 

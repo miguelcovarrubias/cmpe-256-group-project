@@ -71,6 +71,10 @@ button {
     font-family:FontAwesome, Proxima;
 }
 
+.white-text {
+  color: white;
+}
+
 button, html input[type=button], input[type=reset], input[type=submit] {
     -webkit-appearance: button;
     cursor: pointer;
@@ -89,9 +93,6 @@ button, html input[type=button], input[type=reset], input[type=submit] {
     background: #535353;
     color: white;
     border: 1px solid #535353;
-}
-.button-gray:hover {
-    background: #b3b3b3;
 }
 
 .button-red {
