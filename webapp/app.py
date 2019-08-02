@@ -27,9 +27,12 @@ app.config.from_object('config')
 #----------------------------------------------------------------------------#
 # Data.
 #----------------------------------------------------------------------------#
+data_dir_path="<data_directory_path_here>"
+data_file_paths = [data_dir_path + s for s in os.listdir(data_dir_path)]
 
-data = playlist_data("./data/nortenans_and_regue_list.txt.json")
-data.load_new_data("")
+data = playlist_data(data_file_paths)
+# data.load_new_data(data_file_paths)
+
 knn_m = knn_model()
 knn_m.train(data)
 
@@ -80,11 +83,15 @@ def search_api():
 
 
     recomm_list = []
-
-    if model_strategy_method == "knn":
-        recomm_list = knn_m.recommend(data, user_df)
-    elif model_strategy_method == "cosine":
-        recomm_list = pairwise_cosine_similarity.recommend(data, user_df, 10)
+    print("user data")
+    print(user_df)
+    if data.playlist_data.size != 0:
+        if model_strategy_method == "knn":
+            recomm_list = knn_m.recommend(data, user_df)
+        elif model_strategy_method == "cosine":
+            recomm_list = pairwise_cosine_similarity.recommend(data, user_df, 10)
+    else:
+        print("Not data in data.playlist_data dataframe")
 
     print("Recommendation list for %s" % json_data['playlist_url'])
     print(recomm_list)

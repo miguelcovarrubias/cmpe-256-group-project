@@ -8,26 +8,34 @@ class playlist_data:
 
     class __PlaylistData:
         def __init__(self, arg):
-            self.file_source_path = arg
-            self.playlist_names = []
+            self.playlist_features = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence', 'tempo']
             self.playlist_data = pd.DataFrame()
+            self.playlist_names = []
+            self.file_source_path = arg
+            self.load_new_data()
+
 
         def __str__(self):
-            return repr(self) + self.file_source_path
+            return repr(self)
 
-        def load_new_data(self, file_source_path):
-            if path.exists(file_source_path):
-                self.file_source_path = file_source_path
-                print("Data File exists.")
-            else:
-                print("Data File does not exist")
+        # file_source_path is a list
+        def load_new_data(self):
+            for file in self.file_source_path:
 
-            with open(self.file_source_path, 'r') as myfile:
-                data = myfile.read()
-            playlist_data = json.loads(data)['playlists']
-            feature_keys = ['danceability', 'energy', 'loudness', 'speechiness', 'acousticness', 'liveness', 'valence',
-                            'tempo']
-            self.construct_dataframe(playlist_data, feature_keys)
+                feature_keys = self.playlist_features.copy()
+
+                if path.exists(file) and ".txt.json" in file :
+                    print("Loading data in file... : ", file)
+                else:
+                    print("Data File does not exist, continuing...: ", file)
+                    continue
+
+                with open(file, 'r') as myfile:
+                    data = myfile.read()
+
+                playlist_data = json.loads(data)['playlists']
+
+                self.construct_dataframe(playlist_data, feature_keys)
 
         def construct_dataframe(self, data, feature_keys):
             processed_data = {}
@@ -37,7 +45,7 @@ class playlist_data:
                 # go through each track and get the features
                 for track in playlist['tracks']:
 
-                    if track['track_features'] is None:
+                    if 'track_features' not in track or track['track_features'] is None:
                         # print("skipping track")
                         continue
 
@@ -83,13 +91,15 @@ class playlist_data:
             df.columns = feature_keys
             df.set_index('playlist_uri')
 
-            self.playlist_data = df
-            self.playlist_names = playlist_names
+            self.playlist_data = self.playlist_data.append(df)
+
+            self.playlist_names.extend(playlist_names)
 
 
     instance = None
 
     def __init__(self, arg):
+
         if not playlist_data.instance:
             playlist_data.instance = playlist_data.__PlaylistData(arg)
         else:
