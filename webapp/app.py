@@ -4,6 +4,9 @@
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify, session
 import sys
 
+import csv
+from datetime import datetime
+
 import requests
 import json
 import logging
@@ -31,10 +34,10 @@ data_dir_path="<data_directory_path_here>"
 data_file_paths = [data_dir_path + s for s in os.listdir(data_dir_path)]
 
 data = playlist_data(data_file_paths)
-# data.load_new_data(data_file_paths)
 
 knn_m = knn_model()
 knn_m.train(data)
+
 
 #----------------------------------------------------------------------------#
 # Spotify Api
@@ -99,6 +102,7 @@ def search_api():
     # ToDo: add logic to recommend here! this is just a random playlist response the format is not final
     response = {
         'currentPlaylist': 'https://open.spotify.com/embed/playlist/' + playlistId,
+        'method': model_strategy_method,
         'playlists': [
             {'playlistRanking': '1.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[0]},
             {'playlistRanking': '2.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[1]},
@@ -111,6 +115,21 @@ def search_api():
             {'playlistRanking': '9.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[8]},
             {'playlistRanking': '10.', 'playlistUrl': 'https://open.spotify.com/embed/playlist/' + recomm_list[9]}
         ]
+    }
+    return jsonify(response)
+
+@app.route('/api/submitVote', methods=['POST'])
+def submit_vote():
+    json_data = request.get_json(force=True)
+
+    timestamp = datetime.now().strftime("%d-%b-%Y-%H:%M:%S")
+
+    with open(ratings_file_path, 'a+') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([timestamp, json_data['originalPlaylist'], json_data['recommendedPlaylist'], json_data['score'], json_data['method'] ])
+
+    response = {
+        'result': True
     }
     return jsonify(response)
 
