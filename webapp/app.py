@@ -30,6 +30,7 @@ app.config.from_object('config')
 #----------------------------------------------------------------------------#
 # Data.
 #----------------------------------------------------------------------------#
+ratings_file_path = "./data/ratings.csv"
 data_dir_path="<data_directory_path_here>"
 data_file_paths = [data_dir_path + s for s in os.listdir(data_dir_path)]
 
