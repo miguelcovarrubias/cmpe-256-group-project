@@ -14,7 +14,6 @@ class playlist_data:
             self.file_source_path = arg
             self.load_new_data()
 
-
         def __str__(self):
             return repr(self)
 
@@ -36,6 +35,8 @@ class playlist_data:
                 playlist_data = json.loads(data)['playlists']
 
                 self.construct_dataframe(playlist_data, feature_keys)
+                if self.playlist_data.size > 0:
+                    self.playlist_data.drop_duplicates(subset='playlist_uri', inplace=True)
 
         def construct_dataframe(self, data, feature_keys):
             processed_data = {}
