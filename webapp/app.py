@@ -31,10 +31,11 @@ app.config.from_object('config')
 # Data.
 #----------------------------------------------------------------------------#
 ratings_file_path = "./data/ratings.csv"
-data_dir_path="<data_directory_path_here>"
+data_dir_path="/Users/miguel.covarrubias/school/cmpe-256/groupProject/cmpe-256-group-project/data/peda/"
 data_file_paths = [data_dir_path + s for s in os.listdir(data_dir_path)]
 
 data = playlist_data(data_file_paths)
+
 
 knn_m = knn_model()
 knn_m.train(data)
@@ -80,10 +81,11 @@ def search_api():
     sp = cmpe_spotify(clientId, clientSecret)
     user_playlist_data = sp.playlistGetInfo(playlist_url, 0)
 
+
     playlistId = json_data['playlist_url'].split('/')[-1].split(':')[-1]
 
     # convert playlist data into dataframe of 1 row
-    user_df = utils.jsonPlaylistToDataframe(user_playlist_data)
+    user_df = utils.jsonPlaylistToDataframe([user_playlist_data])
 
 
     recomm_list = []

@@ -6,9 +6,11 @@ class pairwise_cosine_similarity:
 
     @staticmethod
     def recommend(df_data, df_user, top_n):
+        print("user informations dataframe")
+        print(df_user)
+        rec_matrix = cosine_similarity(df_user.copy().drop(['playlist_uri'], axis=1), df_data.playlist_data.copy().drop(['playlist_uri'], axis=1))
 
-        rec_matrix = cosine_similarity(df_user, df_data.playlist_data.copy().drop(['playlist_uri'], axis=1))
-
+        # sort list descending (top similar first)
         rec_index_list = (-rec_matrix[0]).argsort()
 
         recommendations = []
@@ -17,7 +19,7 @@ class pairwise_cosine_similarity:
             top_n = len(rec_index_list)
 
         for k in range(0, top_n):
-            recommendations.append(df_data.playlist_names[k])
+            recommendations.append(df_data.playlist_names[rec_index_list[k]])
 
         print('Scores:')
         print(recommendations)
